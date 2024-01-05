@@ -3,6 +3,7 @@ import ContactForm from "./ContactForm/ContactForm";
 import ContactList from "./ContactList/ContactList"
 import Filter from "./Filter/Filter"
 import { Container, Title, Heading2 } from './App.styled'
+import Notiflix from 'notiflix';
 
 class App extends Component {
   state = {
@@ -16,6 +17,21 @@ class App extends Component {
   }
 
   addContact = (newContact) => {
+    const { contacts } = this.state;
+  
+    const isExistingContact = contacts.some(
+      (contact) => contact.name.toLowerCase() === newContact.name.toLowerCase()
+    );
+
+    if (isExistingContact) {
+      Notiflix.Report.warning(
+        'Alert',
+        `Contact with name "${newContact.name}" already exists!`,
+        'Ok'
+      );      
+      return;
+    }
+
     this.setState((prevState) => ({
       contacts: [...prevState.contacts, newContact]
     }));
@@ -41,12 +57,12 @@ class App extends Component {
   }
 
   render() {
-    const { contacts, filter } = this.state;
+    const { filter } = this.state;
 
     return (
       <Container>
         <Title>Phonebook</Title>
-        <ContactForm addContact={this.addContact} contacts={contacts} />
+        <ContactForm addContact={this.addContact} contacts={this.state.contacts} />
 
         <Heading2>Contacts</Heading2>
         <Filter filter={filter} setFilter={this.setFilter} />

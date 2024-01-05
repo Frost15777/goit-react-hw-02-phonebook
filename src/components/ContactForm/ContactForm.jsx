@@ -1,45 +1,27 @@
 import React, { Component } from 'react';
 import { nanoid } from 'nanoid';
-import Notiflix from 'notiflix';
 import { Form, Input, Button, Text } from './ContactForm.styled';
 
 class ContactForm extends Component {
-  
- state = {
-      name: '',
-      number: ''    
+
+  state = {
+    name: '',
+    number: ''    
   }
 
-  handleNameChange = (event) => {
+  handleInputChange = (event) => {
+    const { name, value } = event.target;
     this.setState({
-      name: event.target.value,
-    });
-  };
-
-  handleNumberChange = (event) => {
-    this.setState({
-      number: event.target.value,
+      [name]: value,
     });
   };
 
   handleSubmit = (event) => {
     event.preventDefault();
     const { name, number } = this.state;
-    const { addContact, contacts } = this.props;
+    const { addContact } = this.props;
 
     if (name.trim() === '' || number.trim() === '') {
-      return;
-    }
-
-    const existingContact = contacts.find(
-      (contact) => contact.name.toLowerCase() === name.toLowerCase()
-    );
-    if (existingContact) {
-      Notiflix.Report.warning(
-        'Alert',
-        `Contact with name "${name}" already exists!`,
-        'Ok'
-      );      
       return;
     }
 
@@ -69,7 +51,7 @@ class ContactForm extends Component {
           title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
           required
           value={name}
-          onChange={this.handleNameChange}
+          onChange={this.handleInputChange}
         />
         <Text>Number</Text>
         <Input
@@ -79,7 +61,7 @@ class ContactForm extends Component {
           title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
           required
           value={number}
-          onChange={this.handleNumberChange}
+          onChange={this.handleInputChange}
         />
         <Button type="submit">Add Contact</Button>
       </Form>
