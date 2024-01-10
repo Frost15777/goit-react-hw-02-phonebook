@@ -62,7 +62,7 @@ class App extends Component {
     return (
       <Container>
         <Title>Phonebook</Title>
-        <ContactForm addContact={this.addContact} contacts={this.state.contacts} />
+        <ContactForm addContact={this.addContact} />
 
         <Heading2>Contacts</Heading2>
         <Filter filter={filter} setFilter={this.setFilter} />
